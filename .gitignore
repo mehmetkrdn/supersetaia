@@ -1,0 +1,19 @@
+# Ortam / API anahtarları (Git'e atılmaz)
+.env
+.env.local
+*.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Frontend
+frontend/node_modules
+frontend/dist
+
+# Diğer
+.env
+.venv/
+__pycache__/
+*.pyc
+node_modules/

@@ -1,0 +1,76 @@
+{
+  "tables": {
+    "orders": {
+      "description": "Müşteri siparişleri",
+      "columns": {
+        "order_id": "PK",
+        "customer_id": "FK müşteri",
+        "order_date": "sipariş tarihi"
+      },
+      "aliases": ["sipariş", "siparis", "order", "orders"],
+      "primary_key": ["order_id"],
+      "foreign_keys": {
+        "customer_id": "customers.customer_id"
+      }
+    },
+    "customers": {
+      "description": "Müşteriler",
+      "columns": {
+        "customer_id": "PK",
+        "company_name": "şirket adı"
+      },
+      "aliases": ["müşteri", "musteri", "customer", "customers"],
+      "primary_key": ["customer_id"],
+      "foreign_keys": {}
+    },
+    "order_details": {
+      "description": "Sipariş kalemleri",
+      "columns": {
+        "order_id": "FK sipariş",
+        "product_id": "FK ürün",
+        "quantity": "adet",
+        "unit_price": "birim fiyat"
+      },
+      "aliases": ["sipariş kalemi", "kalem", "order detail", "order_details"],
+      "primary_key": ["order_id", "product_id"],
+      "foreign_keys": {
+        "order_id": "orders.order_id",
+        "product_id": "products.product_id"
+      }
+    },
+    "products": {
+      "description": "Ürünler",
+      "columns": {
+        "product_id": "PK",
+        "product_name": "ürün adı",
+        "category_id": "FK kategori"
+      },
+      "aliases": ["ürün", "urun", "product", "products"],
+      "primary_key": ["product_id"],
+      "foreign_keys": {
+        "category_id": "categories.category_id"
+      }
+    },
+    "categories": {
+      "description": "Ürün kategorileri",
+      "columns": {
+        "category_id": "PK",
+        "category_name": "kategori adı"
+      },
+      "aliases": ["kategori", "category", "categories"],
+      "primary_key": ["category_id"],
+      "foreign_keys": {}
+    },
+    "employees": {
+      "description": "Çalışanlar",
+      "columns": {
+        "employee_id": "PK",
+        "first_name": "ad",
+        "last_name": "soyad"
+      },
+      "aliases": ["çalışan", "calisan", "employee", "employees"],
+      "primary_key": ["employee_id"],
+      "foreign_keys": {}
+    }
+  }
+}

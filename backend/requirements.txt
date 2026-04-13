@@ -1,0 +1,14 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-dotenv>=1.0.0
+# ai.nl_to_sql için (proje kökünde ai/ var)
+google-generativeai>=0.8.0
+psycopg[binary]
+sqlalchemy
+pydantic-settings
+sqlparse
+email-validator
+psycopg2-binary
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart

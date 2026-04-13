@@ -1,0 +1,39 @@
+1)git clone https://github.com/pthom/northwind_psql.git
+2)cd cd northwind_psql
+3)docker-compose up(dockerda ayağa kaldırmak için - arka planda docker açık olmalı)
+
+Supersete veritabanını ekleme
+1)Apache supersete giriş yaptıktan sonra settings-database connections'dan +database'den ekleyebiliriz.
+   -PostgreSQL'i seçip
+   -host: host.docker.internal
+   -PORT:55432
+   -DATABASE NAME:northwind
+   -USERNAME:postgres
+   -PASSWORD:postgres
+Bağlantıyı test edip ekleyebiliriz.
+
+Veritabanı kontrolü için SQL Lab örnek sorgu kodu;
+
+
+SELECT 
+    c.category_name AS "Kategori Adı",
+    SUM(od.quantity) AS "Toplam Satılan Ürün Adeti",
+    ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS "Toplam Gelir ($)"
+FROM 
+    categories c
+JOIN 
+    products p ON c.category_id = p.category_id
+JOIN 
+    order_details od ON p.product_id = od.product_id
+GROUP BY 
+    c.category_name
+ORDER BY 
+    "Toplam Gelir ($)" DESC;
+
+
+"Error: in 18+, these Docker images are configured.." Hatası alınırsa;
+1)paylaştığım docker-compose.yml dosyasını veritabanı dosyasındaki dosyayla değiştirin
+2)Eski kalıntıları temizlemek için terminale sırasıyla
+ -docker-compose down -v (eski hatalı sistemi temizlemek için)
+ -docker-compose up    (sistemi yeniden başlatmak için)
+kodlarını girin

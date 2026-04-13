@@ -1,0 +1,43 @@
+:root {
+  /* FieldPie benzeri: koyu teal birincil, turuncu CTA, açık yüzey */
+  --primary: #007b70;
+  --primary-hover: #006559;
+  --primary-muted: rgba(0, 123, 112, 0.12);
+  --accent: #f05a28;
+  --accent-hover: #d94d22;
+  --bg: #ffffff;
+  --bg-subtle: #f5faf9;
+  --surface: #ffffff;
+  --surface-hover: #eef6f5;
+  --border: #cce5e1;
+  --text: #333333;
+  --text-muted: #5a6d6a;
+  --success: #0d9488;
+  --error: #dc2626;
+  --code-bg: #0f2e2b;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-pill: 9999px;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-subtle);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}

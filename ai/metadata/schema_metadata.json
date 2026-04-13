@@ -1,0 +1,146 @@
+{
+  "version": "1.0",
+  "database": "northwind",
+  "description": "Northwind analytics schema with AI Security logical scope mappings",
+
+  "tables": [
+    {
+      "name": "orders",
+      "description": "Sipariş başlık tablosu (transaction header)",
+      "primary_key": ["order_id"],
+      "columns": [
+        {"name": "order_id", "type": "id", "description": "sipariş id"},
+        {"name": "customer_id", "type": "fk", "description": "müşteri id"},
+        {"name": "employee_id", "type": "fk", "description": "çalışan id"},
+        {"name": "order_date", "type": "date", "description": "sipariş tarihi"},
+        {"name": "required_date", "type": "date", "description": "teslim tarihi"},
+        {"name": "shipped_date", "type": "date", "description": "gönderim tarihi"},
+        {"name": "ship_via", "type": "fk", "description": "kargo firması"},
+        {"name": "freight", "type": "numeric", "description": "kargo ücreti"},
+        {"name": "company_id", "type": "scope", "description": "şirket id"},
+        {"name": "branch_id", "type": "scope", "description": "şube id"},
+        {"name": "department_id", "type": "scope", "description": "departman id"}
+      ],
+      "aliases": ["sipariş", "order", "satış", "işlem"],
+      "priority": "high"
+    },
+
+    {
+      "name": "order_details",
+      "description": "Sipariş satırları (line item, satış metrikleri)",
+      "primary_key": ["order_id", "product_id"],
+      "columns": [
+        {"name": "order_id", "type": "fk"},
+        {"name": "product_id", "type": "fk"},
+        {"name": "unit_price", "type": "numeric"},
+        {"name": "quantity", "type": "numeric"},
+        {"name": "discount", "type": "numeric"}
+      ],
+      "aliases": ["sipariş detayı", "satış detayı", "line item"],
+      "priority": "critical"
+    },
+
+    {
+      "name": "products",
+      "description": "Ürün tablosu",
+      "primary_key": ["product_id"],
+      "columns": [
+        {"name": "product_id"},
+        {"name": "product_name"},
+        {"name": "category_id", "type": "fk"},
+        {"name": "supplier_id", "type": "fk"},
+        {"name": "unit_price"},
+        {"name": "units_in_stock"},
+        {"name": "units_on_order"},
+        {"name": "discontinued"},
+        {"name": "company_id", "type": "scope"}
+      ],
+      "aliases": ["ürün", "product", "mal"],
+      "priority": "high"
+    },
+
+    {
+      "name": "customers",
+      "description": "Müşteri tablosu",
+      "primary_key": ["customer_id"],
+      "columns": [
+        {"name": "customer_id"},
+        {"name": "company_name"},
+        {"name": "city"},
+        {"name": "country"},
+        {"name": "company_id", "type": "scope"},
+        {"name": "region_id", "type": "scope"}
+      ],
+      "aliases": ["müşteri", "firma", "customer", "client"],
+      "priority": "high"
+    },
+
+    {
+      "name": "employees",
+      "description": "Çalışan tablosu",
+      "primary_key": ["employee_id"],
+      "columns": [
+        {"name": "employee_id"},
+        {"name": "first_name"},
+        {"name": "last_name"},
+        {"name": "title"},
+        {"name": "reports_to"},
+        {"name": "company_id", "type": "scope"},
+        {"name": "branch_id", "type": "scope"},
+        {"name": "department_id", "type": "scope"},
+        {"name": "team_id", "type": "scope"}
+      ],
+      "aliases": ["çalışan", "personel", "employee"],
+      "priority": "high"
+    },
+
+    {
+      "name": "categories",
+      "description": "Ürün kategorileri",
+      "primary_key": ["category_id"],
+      "columns": [
+        {"name": "category_id"},
+        {"name": "category_name"},
+        {"name": "description"}
+      ],
+      "aliases": ["kategori", "category"],
+      "priority": "medium"
+    }
+  ],
+
+  "relationships": [
+    {"from": "orders.customer_id", "to": "customers.customer_id"},
+    {"from": "orders.employee_id", "to": "employees.employee_id"},
+    {"from": "orders.order_id", "to": "order_details.order_id"},
+    {"from": "order_details.product_id", "to": "products.product_id"},
+    {"from": "products.category_id", "to": "categories.category_id"}
+  ],
+
+  "logical_scope_mappings": [
+    {"from": "orders.company_id", "to": "companies.id"},
+    {"from": "orders.branch_id", "to": "branches.id"},
+    {"from": "orders.department_id", "to": "departments.id"},
+
+    {"from": "employees.company_id", "to": "companies.id"},
+    {"from": "employees.branch_id", "to": "branches.id"},
+    {"from": "employees.department_id", "to": "departments.id"},
+    {"from": "employees.team_id", "to": "teams.id"},
+
+    {"from": "products.company_id", "to": "companies.id"},
+    {"from": "customers.company_id", "to": "companies.id"},
+    {"from": "customers.region_id", "to": "regions.id"}
+  ],
+
+  "metrics": {
+    "revenue": "SUM(od.quantity * od.unit_price * (1 - od.discount))",
+    "quantity": "SUM(od.quantity)",
+    "order_count": "COUNT(DISTINCT o.order_id)"
+  },
+
+  "default_patterns": {
+    "sales": ["order_details", "orders"],
+    "product_sales": ["products", "order_details", "orders"],
+    "customer_sales": ["customers", "orders", "order_details"],
+    "employee_sales": ["employees", "orders", "order_details"]
+  }
+}
